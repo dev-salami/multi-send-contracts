@@ -12,8 +12,8 @@ import "./IERC20.sol";
  */
 contract BulkSend {
     address private immutable i_owner;
-    uint256 public s_eth_send_fee; // in wei
-    uint256 public s_token_send_fee; // in wei
+    uint256 private s_eth_send_fee; // in wei
+    uint256 private s_token_send_fee; // in wei
 
     event Sent_Bulk_Token(address indexed from, address[] to, uint256[] amount);
     event Sent_Bulk_ETH(address indexed from, address[] to, uint256[] amount);
@@ -151,5 +151,15 @@ contract BulkSend {
      */
     function setToken_Send_Fee(uint256 amount) external onlyOwner {
         s_token_send_fee = amount;
+    }
+
+    // GETTER FUNCTIONS
+
+    function ethSendFee() external view returns (uint256) {
+        return s_eth_send_fee;
+    }
+
+    function tokenSendFee() external view returns (uint256) {
+        return s_token_send_fee;
     }
 }
