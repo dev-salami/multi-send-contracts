@@ -8,7 +8,6 @@ import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
  * @author Salami Khalil
  * @dev Contract for sending bulk tokens or Ether
  * @notice This contract allows the user to send bulk tokens or Ether to an array of addresses.
-
  */
 contract BulkSend {
     address private immutable i_owner;
@@ -123,18 +122,14 @@ contract BulkSend {
         return true;
     }
 
+    /**
+     * @dev Withdraws Ether from the contract. Only callable by the owner.
+     */
     function withdrawEther() external onlyOwner {
         (bool sent, ) = payable(msg.sender).call{value: address(this).balance}(
             ""
         );
         require(sent, " Withdraw unsuccesful");
-    }
-
-    /**
-     * @dev Withdraws Ether from the contract. Only callable by the owner.
-     */
-    function getContractBalance() external view returns (uint256) {
-        return address(this).balance;
     }
 
     /**
@@ -161,5 +156,9 @@ contract BulkSend {
 
     function tokenSendFee() external view returns (uint256) {
         return s_token_send_fee;
+    }
+
+    function getContractBalance() external view returns (uint256) {
+        return address(this).balance;
     }
 }
