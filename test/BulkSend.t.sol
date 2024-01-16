@@ -12,7 +12,6 @@ contract TestBulkSend is StdCheats, Test {
     address USER1 = address(1);
     address USER2 = address(2);
     address USER3 = address(3);
-
     address USER4 = address(4);
 
     address[] recipient_Addressess = [USER1, USER2, USER3, USER4];
@@ -90,4 +89,20 @@ contract TestBulkSend is StdCheats, Test {
         vm.expectRevert("Not enough eth sent");
         bulksend.bulkSendEth(recipient_Addressess, recipient_Amount);
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// FUZZ TEST /////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+    function testFuzz_Set_Eth_Send_Fee(uint256 amount) public {
+        vm.startPrank(CREATOR);
+        bulksend.setETH_Send_Fee(amount);
+        vm.stopPrank();
+
+        assertEq(bulksend.ethSendFee(), amount);
+        console.log(bulksend.ethSendFee());
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// INVARIANT TEST /////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
 }
